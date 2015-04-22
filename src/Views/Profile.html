@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#msgBox").hide();
+            //alert("This is working");
+
+            var UserID = 11;
+            var dataString = 'userid='+ UserID;
+
+            var responseData = $.post( "/profile", dataString)
+                    .done(function( data ) {
+
+                        $.each(data, function(key, value ) {
+                            $("ul").append("<li>" + value.loginid + " - " + value.firstname + " - " + value.lastname + "</li>");
+                        });
+
+                    });
+
+        });
+    </script>
+</head>
+<body>
+<div>
+    <div id="msgBox"></div>
+    <h1> You have been authenticated and you are on Profile page now! </h1> <br />
+<ul></ul>
+
+</div>
+
+</body>
+</html>

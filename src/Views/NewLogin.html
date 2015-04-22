@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Jquery Login Form</title>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $("#ProfileForm").hide();
+            $("#EnrollmentForm").hide();
+            $("#JQueryloginForm").show();
+
+            $("#submitLogin").click(function(){
+
+                var name = $("#nameLogin").val();
+                var password = $("#passwordLogin").val();
+
+                var dataString = 'username='+ name + '&password='+ password;
+
+                if(name==''||password=='')
+                {
+                    alert("Enter Username and Password");
+                }
+                else
+                {
+                    var responseData = $.post( "/api", dataString)
+                            .done(function( data ) {
+                                console.log( "Data Loaded: " + data + " now redirect...");
+
+                                $("#ProfileForm").show();
+                                $("#EnrollmentForm").hide();
+                                $("#JQueryloginForm").hide();
+
+                                $.each(data, function(key, value ) {
+
+                                $('#lblUserName').text(value.loginid);
+                                $('#lblFirstName').text(value.firstname);
+                                $('#lblLastName').text(value.lastname);
+                                $('#lblTwitterID').text(value.twitterid);
+                                $('#lblEmail').text(value.email);
+
+                                });
+                            });
+
+                    responseData.fail(function(){
+                        console.log("Aw Snap... you are an intruder!");
+                        alert("Credentials you provided are incorrect. You will be redirected to the Enroll Page");
+
+                        $("#ProfileForm").hide();
+                        $("#EnrollmentForm").show();
+                        $("#JQueryloginForm").hide();
+
+                    });
+                }
+                return false;
+            });
+
+            $("#submitEnrollment").click(function(){
+
+                var name = $("#nameEnrollment").val();
+                var password = $("#passwordEnrollment").val();
+                var firstname = $("#firstNameEnrollment").val();
+                var lastname = $("#lastNameEnrollment").val();
+                var twitterid = $("#twitteridEnrollment").val();
+                var email = $("#emailEnrollment").val();
+
+                var dataString = 'username='+ name + '&password='+ password+ '&firstname=' + firstname + '&lastname=' + lastname+ '&twitterid=' + twitterid+ '&email=' + email ;
+
+                if(name==''||password=='' ||firstname=='' ||lastname=='' ||twitterid=='')
+                {
+                    alert("Enter proper enrolment information !");
+                }
+                else
+                {
+                    var responseData = $.post( "/enroll", dataString)
+                            .done(function( data ) {
+                                console.log( "Data Loaded: " + data + " now redirect...");
+                                alert("You have been successfully Enrolled ");
+                                window.location.replace("http://localhost:8080/");
+                            });
+
+                    responseData.fail(function(){
+                        console.log("Aw Snap... you are an intruder!");
+                        alert("You failed to enroll ! ");
+                    });
+                }
+                return false;
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+<div>
+    <div id="JQueryloginForm">
+        <h1> Login </h1> <br />
+        <p>
+            <br /><br />
+            <label>Username: </label>
+            <input id="nameLogin" type="text"/><br /><br />
+            <label>Password: </label>
+            <input id="passwordLogin" type="password"/><br /><br />
+            <input id="submitLogin" type="button" value="Submit" /><br />
+        </p>
+    </div>
+
+    <div id="ProfileForm">
+        <h1> Profile</h1> <br />
+        <p>
+            <label>Username: </label><label id="lblUserName">Test</label><br />
+            <label>FirstName: </label><label id="lblFirstName">Test</label><br />
+            <label>LastName: </label><label id="lblLastName">Test</label><br />
+            <label>Twitter ID: </label><label id="lblTwitterID">Test</label><br />
+            <label>Email: </label><label id="lblEmail">Test</label><br />
+        </p>
+        <ul></ul>
+    </div>
+
+    <div id="EnrollmentForm">
+        <h1> Enrollment </h1> <br />
+        <p>
+            <label>Username: </label>
+            <input id="nameEnrollment" type="text"/><br /><br />
+            <label>Password: </label>
+            <input id="passwordEnrollment" type="password"/><br /><br />
+            <label>FirstName: </label>
+            <input id="firstNameEnrollment" type="text"/><br /><br />
+            <label>LastName: </label>
+            <input id="lastNameEnrollment" type="text"/><br /><br />
+            <label>Twitter ID: </label>
+            <input id="twitteridEnrollment" type="text"/><br /><br />
+            <label>Email: </label>
+            <input id="emailEnrollment" type="text"/><br /><br />
+            <input id="submitEnrollment" type="button" value="Submit" /><br />
+        </p>
+    </div>
+</div>
+</body>
+</html>
