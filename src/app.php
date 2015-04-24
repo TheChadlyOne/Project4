@@ -1,5 +1,7 @@
 <?php
 
+
+
 $app = new \Slim\Slim();
 
 //end point landing page
@@ -96,11 +98,13 @@ $app->get('/access', function () use ($app) {
 
 $app->post('/twitter',function() use ($app)  {
 
+
     $userIn = $app->request->params('username');
     $passIn = $app->request->params('password');
 
-
     $access = new \Common\Authentication\TwitterAuth();
+    echo json_encode($access);
+
 });
 
 

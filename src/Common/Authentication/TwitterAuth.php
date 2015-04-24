@@ -8,33 +8,42 @@
 
 namespace Common\Authentication;
 
-require "vendor/autoload.php";
+//require "vendor/autoload.php";
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 
 class TwitterAuth {
 
-    $access_token = "KMOtuI9UCPpeaqshDknjPvsvl";
-    $access_token_secret = "BdTUFUUqNXMfWZWKaImzoWZQBoGmh0ntCcYNFqvSeA6qoNNt6I";
 
+    public $url = "";
 
-    $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token, $access_token_secret);
-    $content = $connection->get("account/verify_credentials");
+    function __construct() {
 
+        $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
+        // $content = $connection->get("account/verify_credentials");
+        $request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
 
-    $connection->
-/*
-    function getConnectionWithAccessToken($oauth_token, $oauth_token_secret) {
-        $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $oauth_token, $oauth_token_secret);
-        return $connection;
+        $_SESSION['oauth_token'] = $request_token['oauth_token'];
+        $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+
+        $this->url = $connection->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
     }
 
-    $connection = getConnectionWithAccessToken("abcdefg", "hijklmnop");
-    $content = $connection->
 
-    get("statuses/home_timeline");
-*/
+    function auth_session() {
+        $request_token = [];
+        $request_token['oauth_token'] = $_SESSION['oauth_token'];
+        $request_token['oauth_token_secret'] = $_SESSION['oauth_token_secret'];
 
+        if (isset($_REQUEST['oauth_token']) && $request_token['oauth_token'] !== $_REQUEST['oauth_token']) {
+            // Abort! Something is wrong.
+        }
 
+        $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $request_token['oauth_token'], $request_token['oauth_token_secret']);
+
+        $access_token = $connection->oauth("oauth/access_token", array("oauth_verifier" => $_REQUEST['oauth_verifier']));
+
+        $_SESSION['access_token'] = $access_token;
+    }
 }

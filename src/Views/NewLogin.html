@@ -76,7 +76,7 @@
                             .done(function( data ) {
                                 console.log( "Data Loaded: " + data + " now redirect...");
                                 alert("You have been successfully Enrolled ");
-                                window.location.replace("http://localhost:8080/");
+                                window.location.replace("/");
                             });
 
                     responseData.fail(function(data){
@@ -100,10 +100,17 @@
                 }
                 else
                 {
-                    var responseData = $.post( "/api", dataString)
+                    var responseData = $.post( "/twitter", dataString)
+                            .done(function( data ) {
+                                var json = JSON.parse(data);
+                                location.href = json.url;
+                                return;
+
+                   /*
+                    var responseData = $.post( "/twitter", dataString)
                             .done(function( data ) {
                                 console.log( "Data Loaded: " + data + " now redirect...");
-
+                    */
                                 $("#ProfileForm").show();
                                 $("#EnrollmentForm").hide();
                                 $("#JQueryloginForm").hide();
@@ -121,11 +128,11 @@
 
                     responseData.fail(function(){
                         console.log("Aw Snap... you are an intruder!");
-                        alert("Credentials you provided are incorrect. You will be redirected to the Enroll Page");
+                       // alert("Credentials you provided are incorrect. You will be redirected to the Enroll Page");
 
                         $("#ProfileForm").hide();
-                        $("#EnrollmentForm").show();
-                        $("#JQueryloginForm").hide();
+                        $("#EnrollmentForm").hide();
+                        $("#JQueryloginForm").show();
 
                     });
                 }
@@ -148,8 +155,9 @@
             <input id="nameLogin" type="text"/><br /><br />
             <label>Password: </label>
             <input id="passwordLogin" type="password"/><br /><br />
-            <input id="submitLogin" type="button" value="Submit" /><br />
-            <a href="http://localhost:8080/enroll"/>Registration<a/>
+            <input id="submitLogin" type="button" value="Submit" /><br /><br/>
+
+            <a href="/enroll"/>Registration<a/>
 
         <h2>Twitter Login</h2><br/>
         <br/>
