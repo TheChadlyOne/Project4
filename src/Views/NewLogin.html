@@ -79,14 +79,61 @@
                                 window.location.replace("http://localhost:8080/");
                             });
 
-                    responseData.fail(function(){
+                    responseData.fail(function(data){
                         console.log("Aw Snap... you are an intruder!");
                         alert("You failed to enroll ! ");
                     });
                 }
                 return false;
             });
+            $("#twitterLogin").click(function(){
 
+                var name = $("#twitterId").val();
+                var password = $("#twitterPass").val();
+
+                var dataString = 'username='+ name + '&password='+ password;
+
+
+                if(name==''||password=='')
+                {
+                    alert("Enter Username and Password");
+                }
+                else
+                {
+                    var responseData = $.post( "/api", dataString)
+                            .done(function( data ) {
+                                console.log( "Data Loaded: " + data + " now redirect...");
+
+                                $("#ProfileForm").show();
+                                $("#EnrollmentForm").hide();
+                                $("#JQueryloginForm").hide();
+
+                                $.each(data, function(key, value ) {
+
+                                    $('#lblUserName').text(value.loginid);
+                                    $('#lblFirstName').text(value.firstname);
+                                    $('#lblLastName').text(value.lastname);
+                                    $('#lblTwitterID').text(value.twitterid);
+                                    $('#lblEmail').text(value.email);
+
+                                });
+                            });
+
+                    responseData.fail(function(){
+                        console.log("Aw Snap... you are an intruder!");
+                        alert("Credentials you provided are incorrect. You will be redirected to the Enroll Page");
+
+                        $("#ProfileForm").hide();
+                        $("#EnrollmentForm").show();
+                        $("#JQueryloginForm").hide();
+
+                    });
+                }
+                return false;
+
+
+
+                                });
 
         });
     </script>
@@ -102,6 +149,15 @@
             <label>Password: </label>
             <input id="passwordLogin" type="password"/><br /><br />
             <input id="submitLogin" type="button" value="Submit" /><br />
+            <a href="http://localhost:8080/enroll"/>Registration<a/>
+
+        <h2>Twitter Login</h2><br/>
+        <br/>
+            <label>Username:</label>
+            <input id="twitterId" type="text"/><br/><br/>
+            <label>Password: </label>
+            <input id="twitterPass" type="text"/><br/><br/>
+            <input id="twitterLogin" type="button" value ="submit"/><br/>
         </p>
     </div>
 
