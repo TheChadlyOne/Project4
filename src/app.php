@@ -1,5 +1,7 @@
 <?php
 
+
+
 $app = new \Slim\Slim();
 
 //end point landing page
@@ -14,6 +16,7 @@ function echoRespnse($status_code, $response) {
     $app->status($status_code);
     echo json_encode($response);
 }
+
 
 $app->post('/enroll',function () use($app) {
 
@@ -91,6 +94,17 @@ $app->get('/access', function () use ($app) {
     $response["error"] = false;
     $response["message"] = "Your UUID is : $uuid";
     echoRespnse(200, $response);
+});
+
+$app->post('/twitter',function() use ($app)  {
+
+
+    $userIn = $app->request->params('username');
+    $passIn = $app->request->params('password');
+
+    $access = new \Common\Authentication\TwitterAuth();
+    echo json_encode($access);
+
 });
 
 
