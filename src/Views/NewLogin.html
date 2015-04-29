@@ -100,6 +100,8 @@
                 }
                 else
                 {
+
+
                     var responseData = $.post( "/twitter", dataString)
                             .done(function( data ) {
                                 var json = JSON.parse(data);
@@ -176,7 +178,12 @@
             <label>FirstName: </label><label id="lblFirstName">Test</label><br />
             <label>LastName: </label><label id="lblLastName">Test</label><br />
             <label>Twitter ID: </label><label id="lblTwitterID">Test</label><br />
-            <label>Email: </label><label id="lblEmail">Test</label><br />
+            <label>Email: </label><label id="lblEmail">Test</label><br /><br /><br />
+
+            <a class="twitter-timeline" href="https://twitter.com/matthewakimball" data-widget-id="593467059977093120">Tweets by @matthewakimball</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id))
+            {js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
         </p>
         <ul></ul>
     </div>

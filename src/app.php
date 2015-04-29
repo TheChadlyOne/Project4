@@ -96,6 +96,12 @@ $app->get('/access', function () use ($app) {
     echoRespnse(200, $response);
 });
 
+$app->get('/enroll', function()
+{
+    require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'EnrollmentForm.html');
+});
+
+
 $app->post('/twitter',function() use ($app)  {
 
 
@@ -103,10 +109,11 @@ $app->post('/twitter',function() use ($app)  {
     $passIn = $app->request->params('password');
 
     $access = new \Common\Authentication\TwitterAuth();
+   // $reply = $access->_Construct();
+   // $respond = $reply->auth_session();
     echo json_encode($access);
 
 });
-
 
 
 $app->run();
