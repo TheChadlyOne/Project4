@@ -1,7 +1,9 @@
 {
     "require": {
         "slim/slim": "~2.6",
-        "guzzle/guzzle": "~3.9"
+        "guzzle/guzzle": "~3.9",
+        "php": ">=5.4.0",
+        "abraham/twitteroauth": "0.5.2"
     },
     "autoload":{
         "psr-4":{

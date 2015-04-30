@@ -1,5 +1,7 @@
 <?php
 
+
+
 $app = new \Slim\Slim();
 
 //end point landing page
@@ -14,6 +16,7 @@ function echoRespnse($status_code, $response) {
     $app->status($status_code);
     echo json_encode($response);
 }
+
 
 $app->post('/enroll',function () use($app) {
 
@@ -93,6 +96,24 @@ $app->get('/access', function () use ($app) {
     echoRespnse(200, $response);
 });
 
+$app->get('/enroll', function()
+{
+    require_once realpath(__DIR__.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'EnrollmentForm.html');
+});
+
+
+$app->post('/twitter',function() use ($app)  {
+
+
+    $userIn = $app->request->params('username');
+    $passIn = $app->request->params('password');
+
+    $access = new \Common\Authentication\TwitterAuth();
+   // $reply = $access->_Construct();
+   // $respond = $reply->auth_session();
+    echo json_encode($access);
+
+});
 
 
 $app->run();

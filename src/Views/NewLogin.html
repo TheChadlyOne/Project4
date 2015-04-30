@@ -76,17 +76,73 @@
                             .done(function( data ) {
                                 console.log( "Data Loaded: " + data + " now redirect...");
                                 alert("You have been successfully Enrolled ");
-                                window.location.replace("http://localhost:8080/");
+                                window.location.replace("/");
                             });
 
-                    responseData.fail(function(){
+                    responseData.fail(function(data){
                         console.log("Aw Snap... you are an intruder!");
                         alert("You failed to enroll ! ");
                     });
                 }
                 return false;
             });
+            $("#twitterLogin").click(function(){
 
+                var name = $("#twitterId").val();
+                var password = $("#twitterPass").val();
+
+                var dataString = 'username='+ name + '&password='+ password;
+
+
+                if(name==''||password=='')
+                {
+                    alert("Enter Username and Password");
+                }
+                else
+                {
+
+
+                    var responseData = $.post( "/twitter", dataString)
+                            .done(function( data ) {
+                                var json = JSON.parse(data);
+                                location.href = json.url;
+                                return;
+
+                   /*
+                    var responseData = $.post( "/twitter", dataString)
+                            .done(function( data ) {
+                                console.log( "Data Loaded: " + data + " now redirect...");
+                    */
+                                $("#ProfileForm").show();
+                                $("#EnrollmentForm").hide();
+                                $("#JQueryloginForm").hide();
+
+                                $.each(data, function(key, value ) {
+
+                                    $('#lblUserName').text(value.loginid);
+                                    $('#lblFirstName').text(value.firstname);
+                                    $('#lblLastName').text(value.lastname);
+                                    $('#lblTwitterID').text(value.twitterid);
+                                    $('#lblEmail').text(value.email);
+
+                                });
+                            });
+
+                    responseData.fail(function(){
+                        console.log("Aw Snap... you are an intruder!");
+                       // alert("Credentials you provided are incorrect. You will be redirected to the Enroll Page");
+
+                        $("#ProfileForm").hide();
+                        $("#EnrollmentForm").hide();
+                        $("#JQueryloginForm").show();
+
+                    });
+                }
+                return false;
+
+
+
+                                });
 
         });
     </script>
@@ -101,7 +157,17 @@
             <input id="nameLogin" type="text"/><br /><br />
             <label>Password: </label>
             <input id="passwordLogin" type="password"/><br /><br />
-            <input id="submitLogin" type="button" value="Submit" /><br />
+            <input id="submitLogin" type="button" value="Submit" /><br /><br/>
+
+            <a href="/enroll"/>Registration<a/>
+
+        <h2>Twitter Login</h2><br/>
+        <br/>
+            <label>Username:</label>
+            <input id="twitterId" type="text"/><br/><br/>
+            <label>Password: </label>
+            <input id="twitterPass" type="text"/><br/><br/>
+            <input id="twitterLogin" type="button" value ="submit"/><br/>
         </p>
     </div>
 
@@ -112,7 +178,12 @@
             <label>FirstName: </label><label id="lblFirstName">Test</label><br />
             <label>LastName: </label><label id="lblLastName">Test</label><br />
             <label>Twitter ID: </label><label id="lblTwitterID">Test</label><br />
-            <label>Email: </label><label id="lblEmail">Test</label><br />
+            <label>Email: </label><label id="lblEmail">Test</label><br /><br /><br />
+
+            <a class="twitter-timeline" href="https://twitter.com/matthewakimball" data-widget-id="593467059977093120">Tweets by @matthewakimball</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id))
+            {js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
         </p>
         <ul></ul>
     </div>
